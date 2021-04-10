@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace ConsoleStringSearch
+namespace GoogleCodeInterview
 {
 	class Program
 	{
@@ -23,11 +23,26 @@ namespace ConsoleStringSearch
 					Console.Write(word + ",");
 				}
 		}
+		/// <summary>
+		/// This methode converts a word to phonenumber: flower -> 356937
+		/// +----+----+----+
+		/// |  1 |  2 |  3 |
+		/// |    | abc| def|
+		/// +----+----+----+
+		/// |  4 |  5 |  6 |
+		/// | ghi| jkl| mno|
+		/// +----+----+----+
+		/// |  7 |  8 |  9 |
+		/// |pqrs| tuv|wxyz|
+		/// +----+----+----+
+		/// </summary>
+		/// <param name="word"></param>
+		/// <returns></returns>
 		private static string ConvertWordToPhoneNumber(string word)
 		{
-			StringBuilder number = new();
-			for (int i = 0; i < word.Length; i++) number.Append(char2num[word[i] - 'a']);
-			return number.ToString();
+			StringBuilder phoneNumber = new();
+			for (int i = 0; i < word.Length; i++) phoneNumber.Append(char2num[word[i] - 'a']);
+			return phoneNumber.ToString();
 		}
 	}
 }
