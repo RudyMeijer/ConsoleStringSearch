@@ -1,16 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ConsoleFindRectangles
 {
 	class Program
 	{
+		// typo minimum
 		static void Main(string[] args)
 		{
-			List<Point> coordinates = new() { new(1, 1), new(2, 1), new(3, 1), new(1, 2), new(2, 2), new(3, 2) };
-			ConsoleFindRectangles(coordinates);
+			//List<Point> coordinates = new() { new(1, 1), new(2, 1), new(3, 1), new(1, 2), new(2, 2), new(3, 2) };
+			//ConsoleFindRectangles(coordinates);
+			LoadJSONObject();
 		}
+
+		private static void LoadJSONObject()
+		{
+			var options = new JsonSerializerOptions
+			{
+				WriteIndented = true,
+				PropertyNameCaseInsensitive = true
+			};
+			var blocks = JsonSerializer.Deserialize<Rootobject>(File.ReadAllText("blocks.json"),options).Blocks;
+			for (int i = 0; i < blocks.Length; i++)
+			{
+				Console.WriteLine($"block {i}: {minDistance(i, blocks)}");
+			}
+		}
+		/// <summary>
+		/// This method computes the minimal distance from a block to gym + school + store.
+		/// </summary>
+		/// <param name="i"></param>
+		/// <param name="blocks"></param>
+		/// <returns></returns>
+		private static int minDistance(int i, Block[] blocks)
+		{
+			var mingymdistance = 9;
+			var minschooldistance = 9;
+			var minstoredistance = 9;
+			for (int j = 0; j < blocks.Length; j++)
+			{
+				if (blocks[j].Gym) mingymdistance = Math.Min(Math.Abs(i - j), mingymdistance);
+				if (blocks[j].School) minschooldistance = Math.Min(Math.Abs(i - j), minschooldistance);
+				if (blocks[j].Store) minstoredistance = Math.Min(Math.Abs(i - j), minstoredistance);
+			}
+			return mingymdistance + minschooldistance + minstoredistance;
+		}
+
 		/// <summary>
 		/// Find rectangles in coordinates.
 		/// </summary>
