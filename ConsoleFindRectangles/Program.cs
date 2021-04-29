@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -9,12 +10,24 @@ namespace ConsoleFindRectangles
 {
 	class Program
 	{
-		// typo minimum
+		// comment 1
 		static void Main(string[] args)
 		{
 			//List<Point> coordinates = new() { new(1, 1), new(2, 1), new(3, 1), new(1, 2), new(2, 2), new(3, 2) };
 			//ConsoleFindRectangles(coordinates);
 			LoadJSONObject();
+		}
+		public SerialPort OpenPort1(string portName)
+		{
+			SerialPort port = new(portName);
+			port.Open();  //CA2000 fires because this might throw
+			SomeMethod(); //Other method operations can fail
+			return port;
+		}
+
+		private void SomeMethod()
+		{
+			throw new NotImplementedException();
 		}
 
 		private static void LoadJSONObject()
